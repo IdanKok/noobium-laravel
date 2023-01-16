@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-
+use App\Http\Requests\Auth\SignUpRequest;
 class AuthController extends Controller
 {
     //
-    public function signUp(Request $request)
+    public function signUp(SignUpRequest $request)
     {
+        $validated = $request->validated();
+
         $user = User::create([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'password' => bcrypt($request['password']),
-            'picture' => env('AVATAR_GENERATOR_URL') . $request['name'],
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => bcrypt($validated['password']),
+            'picture' => env('AVATAR_GENERATOR_URL') . $validated['name'],
         ]);
 
         $token = auth()->login($user);
