@@ -18,6 +18,6 @@ use App\Http\Controllers\AuthController;
 Route::post('/sign-up', [AuthController::class, 'signUp']);
 Route::post('/sign-in', [AuthController::class, 'signIn']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('auth:api')->group(function() {
+    Route::post('/sign-out', [AuthController::class, 'signOut']);
+}); 
