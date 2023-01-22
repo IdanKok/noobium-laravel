@@ -9,6 +9,12 @@ use App\Http\Requests\Auth\SignInRequest;
 
 class AuthController extends Controller
 {
+
+    public function __construct(User $user)
+    {
+        // model as dependency injection
+        $this->user = $user;
+    }
     //
     public function signUp(SignUpRequest $request)
     {
@@ -114,6 +120,32 @@ class AuthController extends Controller
                 'message' =>'Signed Out Succesfully'
             ],
             'data'=> [],
+        ]);
+    }
+
+    public function refresh()
+    {
+        $user = auth()->user();
+        $token = auth()->fromUser(auth()->user());
+
+        return response()->json([
+            'meta'=> [
+                'code' => 200,
+                'status' => 'succes',
+                'message' =>'Token refresh succesfully.',
+            ],
+            'data'=> [
+                'user' => [
+                    'name' => $user->name,
+                    'email'=> $user->email,
+                    'picture' => $user->picture,
+                ],
+                'acces_token' => [
+                    'token' => $token,
+                    'type' => 'Bearer',
+                    'expires_in' => strtotime('+' . auth()->factory()->getTTL() . ' minutes'),
+                ]    
+            ],
         ]);
     }
 }
