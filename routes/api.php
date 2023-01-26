@@ -21,8 +21,9 @@ Route::post('/sign-in', [AuthController::class, 'signIn']);
 Route::middleware('auth:api')->group(function() {
     Route::prefix('/me')->group(function() {
         Route::get('/profile', [ProfileController::class, 'show']);
+        Route::put('/profile', [ProfileController::class, 'update']); 
     });
     Route::post('/sign-out', [AuthController::class, 'signOut']);
-}); 
+});     
 
 Route::middleware('jwt.refresh')->post('/refresh', [AuthController::class, 'refresh']);
