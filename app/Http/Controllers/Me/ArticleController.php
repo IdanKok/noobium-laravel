@@ -102,4 +102,54 @@ class ArticleController extends Controller
         ], 500);
 
     }
+
+    public function show($id)
+    {
+        //get article berdasarkan id yang diberikan
+        //cek apakah article berhasil diget 
+        //jika article idak bisa diget maka kembalikan response nkot found
+        //jika article berhasil di get maka dapatkan id user saat ini login
+        //cek apakah id user yang saat ini login sama dengan id user yang ada di data article yang kita get
+        //jika tidak sama maka kembalikan response unauthorized 
+        //jika sama maka kembalikan article denga success
+
+        $article = Article::with(['category', 'user:id,name,picture'])->find($id);
+        
+        if($article)
+        {
+            $userId = Auth()->id();
+
+            if($article->user_id === $userId)
+            {
+                return response()->json([
+                    'meta' => [
+                        'code' => 200,
+                        'status' => 'succes',
+                        'message' => 'Article fetched succesfully',
+                    ],
+                    'data' => $article,
+                ]);
+                
+            }
+
+            return response()->json([
+                'meta' => [
+                    'code' => 401,
+                    'status' => 'error',
+                    'message' => 'Unauthorized'
+                ],
+                'data' => [],
+            ], 404);
+        }
+
+        return response()->json([
+            'meta' => [
+                'code' => 404,
+                'status' => 'error',
+                'message' => 'Article not found'
+            ],
+            'data' => [],
+        ], 404);
+
+    }
 }
