@@ -7,7 +7,7 @@ use App\Traits\ErrorResponseJson;
 use Illuminate\Validation\Rule;
 use App\Models\Category;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     use ErrorResponseJson;
     /**
@@ -28,10 +28,11 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'category_id' =>'required|' . Rule::in(Category::pluck('id')),
-            'title' => 'required|string|max:190|',
+            //
+            'category_id' => 'required|' . Rule::in(Category::pluck('id')),
+            'title' => 'required|string|max:190',
             'content' => 'required|string',
-            'featured_image' => 'required|image|mimes:jpg,jpeg,bmp,png',
+            'featured_image' => 'nullable|image|mimes:jpg,jpeg,bmp,png',
         ];
     }
 
@@ -40,7 +41,5 @@ class StoreRequest extends FormRequest
         return [
             'category_id' => 'category'
         ];
-    }   
-
-
+    }
 }

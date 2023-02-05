@@ -9,6 +9,7 @@ use Str;
 use App\Models\User;
 use ImageKit\ImageKit;
 use App\Models\Article;
+use App\Http\Requests\Me\Article\UpdateRequest;
 
 class ArticleController extends Controller
 {
@@ -152,4 +153,103 @@ class ArticleController extends Controller
         ], 404);
 
     }
+
+    public function update(UpdateRequest $request, $id)
+    {
+        // category_id
+        //title
+        //content
+        // feaured_image
+        // get article berdasarkan id
+        // cek apalah get article berhasil
+        // jika berhasil get user id yang sedang login
+        // cek apakah user_id article sama dengan id user yang login
+        // jika iya maka get semua request yang valid 
+        // generate slug dari title
+        // generate conten_preview berdasarkan content
+        // cek apakah ada request featured_image
+        // jika iya maka upload file ke image kit
+        // get url hasil upload image kit
+        // lakukan update article dengan request valid dan data yang kita generate auto di controller ini 
+        // cek apakah update article berhasil
+        // jika iya maka kembalikan respnse success 
+        // (jika line ini diekseskusi artinya tidak berhasil update artikel) kembalikan response error 500, gagal update artikel
+        // (jika line ini dieksekusi artinya article ini bukan milik user yang login) kembalikan response 401, unauthorized
+        //  (jika line ini diekseskusi maka    artike tidak berhasil di get) kembalikan resaponse 404
+
+        $article = Article::find($id);
+
+        if($article)
+        {
+            $userId = auth()->id();
+            if($article->user_id === $userId)
+            {
+                $validated = $request->validated();
+                $validated['slug'] = Str::of($validated['title'])->slug('-') . '-' . time();
+                $validated['content_preview'] = substr($validated['content'], 0, 218) . '...';
+
+                if($request->hasFile('featured_image'))
+                {
+                    $imageKit = new ImageKit(
+                        env('IMAGEKIT_PUBLIC_KEY'),
+                        env('IMAGEKIT_PRIVATE_KEY'),
+                        env('IMAGEKIT_URL_ENDPOINT'),
+                    );
+                    $image = base64_encode(file_get_contents($request->file('featured_image')));
+            
+                    $uploadImage = $imageKit->uploadFile([
+                        'file' => $image,
+                        'fileName' => $validated['slug'],
+                        'folder' => '/article', 
+                    ]);
+                    
+                    $validated['featured_image'] = $uploadImage->result->url;
+                
+                }
+
+                $updatedArticle = $article->update($validated);
+
+                if ($updatedArticle)
+                {
+                    return response()->json([
+                        'meta' => [
+                            'code' => 200,
+                            'status' => 'succes',
+                            'message' => 'Article updated succesfully',
+                        ],
+                        'data' => []
+                    ]);
+                }
+
+                return response()->json([
+                    'meta' => [
+                        'code' => 500,
+                        'status' => 'error',
+                        'message' => 'Error! Article failed to update. ',
+                    ],
+                    'data' => []
+                ], 500);
+            }
+
+            return response()->json([
+                'meta' => [
+                    'code' => 401,
+                    'status' => 'error',
+                    'message' => 'Unauthorized'
+                ],
+                'data' => [],
+            ], 401);
+
+        }
+
+        return response()->json([
+            'meta' => [
+                'code' => 404,
+                'status' => 'error',
+                'message' => 'Article not found',
+            ],
+            'data' => [],
+        ], 404);
+    }
 }
+
