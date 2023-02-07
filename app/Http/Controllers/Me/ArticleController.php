@@ -22,7 +22,6 @@ class ArticleController extends Controller
         //buat paginationny
 
         $userId = auth()->id();
-
         $articles = Article::with(['category', 'user:id,name,email,picture'])->select([
             'id', 
             'user_id', 
