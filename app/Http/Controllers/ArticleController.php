@@ -45,4 +45,36 @@ class ArticleController extends Controller
 
         ]);
     }
+
+    public function show($slug)
+    {
+        // get article berdasarkan slug
+        //  cek apakah query get article berhasil
+        // jika iya kembalikan response success
+        // (dieksekusi jika get article gagal) kembalikan response 404 not found
+        $article = Article::with(['category', 'user:id,name,email,picture'])
+            ->where('slug', $slug)
+            ->first()
+            ;
+        
+        if($article)
+        {
+            return response()->json([
+                'meta' => [
+                    'code' => 200, 
+                    'status' => 'succes',
+                    'message' => 'Article fetched succesfully',
+                ],
+                'data' => $article,
+            ]);
+        }    
+        return response()->json([
+            'meta' => [
+                'code' => 404, 
+                'status' => 'error',
+                'message' => 'Article not found',
+            ],
+            'data' => [],
+        ], 404);
+    }
 }
