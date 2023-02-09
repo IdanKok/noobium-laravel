@@ -26,8 +26,7 @@ class CategoryController extends Controller
     {
         // get category slug dimana slugnya sama dengan category slug yang didapat dari route
         // cek apakaha category tersebut ada
-        // jika ada maka cari category berdasarkan id dari slug category tadi lalu cari articlenya
-        // lalu return article tersebut
+        // jika adaFullscreeurn article tersebut
         // (jika kode ini dieksekusi maka category yang dicari tidak ada) maka kembalikan response error 404 category not found
         $category = Category::where('slug', $categorySlug)->first();
 
