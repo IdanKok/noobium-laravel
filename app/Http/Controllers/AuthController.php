@@ -44,7 +44,7 @@ class AuthController extends Controller
         return response()->json([
             'meta' => [
                 'code' => 200,
-                'status' => 'succes',
+                'status' => 'success',
                 'message' => 'User created succesfully',
             ],
             'data' => [
@@ -53,7 +53,7 @@ class AuthController extends Controller
                     'email' => $user->email,
                     'picture' => $user->picture,
                 ],
-                'acces_token' => [
+                'access_token' => [
                     'token' => $token,
                     'type' => 'Bearer',
                     'expires_in' => strtotime('+' . auth()->factory()->getTTL() . ' minutes'),
@@ -100,12 +100,12 @@ class AuthController extends Controller
                     'email'=> $user->email,
                     'picture' => $user->picture,
                 ],
-                'acces_token' => [
+                'access_token' => [
                     'token' => $token,
                     'type' => 'Bearer',
                     'expires_in' => strtotime('+' . auth()->factory()->getTTL() . ' minutes'),
                 ]    
-
+                    
             ],
         ]);
     }
@@ -140,7 +140,7 @@ class AuthController extends Controller
                     'email'=> $user->email,
                     'picture' => $user->picture,
                 ],
-                'acces_token' => [
+                'access_token' => [
                     'token' => $token,
                     'type' => 'Bearer',
                     'expires_in' => strtotime('+' . auth()->factory()->getTTL() . ' minutes'),

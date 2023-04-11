@@ -22,24 +22,24 @@ class ArticleController extends Controller
         {
             $articles = Article::with(['category', 'user:id,name,email,picture'])
                 ->select([
-                    'id', 'user_id', 'category_id', 'title', 'slug', 'content_preview', 'created_at', 'updated_at'
+                    'id', 'user_id', 'category_id', 'title', 'slug', 'content_preview', 'created_at', 'featured_image','updated_at'
                 ])
-                ->where('titile', 'like', '%' . $searchQuery .'%')
-                ->paginate()
+                ->where('title',  'like', '%' . $searchQuery .'%')
+                ->paginate(15)
                 ;
         } else {
-            $articles = Article::with(['category', 'user:id,name,email,picture'])
+            $articles = Article::with(['category:id,name,slug', 'user:id,name,email,picture'])
             ->select([
-                'id', 'user_id', 'category_id', 'title', 'slug', 'content_preview', 'created_at', 'updated_at'
+                'id', 'user_id', 'category_id', 'title', 'slug', 'content_preview', 'featured_image','created_at', 'updated_at'
             ])
-            ->paginate()
+            ->paginate(15)
             ;
         }
         return response()->json([
             'meta'=> [
                 'code' => 200,
                 'status'=> 'success',
-                'messsage' => 'Article fetche succesfully',
+                'messsage' => 'Article fetchedd succesfully',
             ],
             'data' => $articles,
 
@@ -52,7 +52,7 @@ class ArticleController extends Controller
         //  cek apakah query get article berhasil
         // jika iya kembalikan response success
         // (dieksekusi jika get article gagal) kembalikan response 404 not found
-        $article = Article::with(['category', 'user:id,name,email,picture'])
+        $article = Article::with(['category:id,name,slug', 'user:id,name,email,picture'])
             ->where('slug', $slug)
             ->first()
             ;

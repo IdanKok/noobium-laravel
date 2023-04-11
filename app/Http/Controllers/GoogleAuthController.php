@@ -10,13 +10,13 @@ class GoogleAuthController extends Controller
     //
 
     public function signIn(Request $request)
-    {
+    {   
         // get json request, token jwt
         // pecah token dengan separator
         // decode base64 ke string menggunakan base64_decoder, yang didecode adalah pecahan dengan index 1 
         
         $request = $request->json()->all();
-        $okenParts = explode('.', $request['token']);
+        $tokenParts = explode('.', $request['token']);
         $tokenPayload = base64_decode($tokenParts[1]);
         $jwtPayload = json_decode($tokenPayload, true);
 

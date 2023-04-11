@@ -36,7 +36,7 @@ class CategoryController extends Controller
                 ->articles()
                 ->with(['category','user:id,name,picture'])
                 ->select([
-                    'id', 'user', 'category_id', 'title', 'content_preview', 'slug', 'featured_image', 'created_at', 'updated_at'
+                    'id','user_id', 'category_id', 'title', 'content_preview', 'slug', 'featured_image', 'created_at', 'updated_at'
                 ])
                 ->paginate();
                 return response()->json([

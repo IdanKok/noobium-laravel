@@ -23,11 +23,13 @@ use App\Http\Controllers\GoogleAuthController;
 
 Route::post('/sign-up', [AuthController::class, 'signUp']);
 Route::post('/sign-in', [AuthController::class, 'signIn']);
+Route::post('/sign-in/google', [GoogleAuthController::class, 'signIn']);
+
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{categorySlug}', [CategoryController::class, 'show']);
 Route::get('/articles', [ArticleController::class, 'index']);
 Route::get('/articles/{slug}', [ArticleController::class, 'show']);
-Route::post('/sign-in/google', [GoogleAuthController::class, 'signIn']);
+
 
 Route::middleware('auth:api')->group(function() {
     Route::prefix('/me')->group(function() {

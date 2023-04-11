@@ -129,7 +129,6 @@ class ArticleController extends Controller
                     ],
                     'data' => $article,
                 ]);
-                
             }
 
             return response()->json([
