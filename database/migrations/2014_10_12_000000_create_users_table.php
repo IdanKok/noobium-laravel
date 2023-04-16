@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('picture')->nullable();
             $table->string('social_id')->nullable();
-            $table->string('social-type')->nullable();
+            $table->string('social_type')->nullable();
             $table->timestamps();
         });
     }

@@ -31,7 +31,7 @@ class ArticleSeeder extends Seeder
                 'slug' => Str::of($title)->slug('-'), 
                 'content' => $content,
                 'content_preview' => substr($content,0 , 218) . '...',
-                'featured_image' => fake()->imageUrl(s),
+                'featured_image' => fake()->imageUrl(),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
